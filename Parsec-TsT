@@ -1,0 +1,37 @@
+name: Auto-Login-Parsec
+
+on: 
+  workflow_dispatch:
+    inputs:
+      email:
+        description: 'E-mail do Parsec'
+        required: true
+      password:
+        description: 'Senha do Parsec'
+        required: true
+
+jobs:
+  login-and-setup:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Install Parsec
+      run: |
+        choco install parsec -y  # Instala o cliente Parsec no ambiente
+
+    - name: Run Login Script
+      run: |
+        python parsec_login.py --email "${{ github.event.inputs.email }}" --password "${{ github.event.inputs.password }}"
+      env:
+        PARSEC_USER: ${{ github.event.inputs.email }}
+        PARSEC_PASS: ${{ github.event.inputs.password }}
+
+    - name: Verify Login
+      run: |
+        parsec.exe --status  # Confirma se o login foi realizado com sucesso
+
+    - name: Keep Session Alive
+      run: ./timeout.ps1
