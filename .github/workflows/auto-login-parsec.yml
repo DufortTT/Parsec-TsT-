@@ -22,9 +22,13 @@ jobs:
       run: |
         choco install parsec -y --ignore-checksums
 
-    - name: Verify Login with Shortcut
+    - name: Launch Parsec with Shortcut
       run: |
-        Start-Process -FilePath "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Parsec\Parsec.lnk" -ArgumentList "--status" -NoNewWindow -Wait
+        Start-Process -FilePath "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Parsec\Parsec.lnk" -ArgumentList "--email '${{ github.event.inputs.email }}' --password '${{ github.event.inputs.password }}'" -NoNewWindow -Wait
+
+    - name: Verify Login with Executable
+      run: |
+        "C:\Program Files\Parsec\Parsec.exe" --status
 
     - name: Install Python Dependencies
       run: |
