@@ -1,4 +1,4 @@
-name: Auto-Login-Parsec
+name: Connect GitHub Runner to Parsec
 
 on: 
   workflow_dispatch:
@@ -11,26 +11,26 @@ on:
         required: true
 
 jobs:
-  login-and-setup:
-    runs-on: windows-latest
+  connect-parsec:
+    runs-on: windows-latest  # Escolha Windows, pois o Parsec depende de GUI
 
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v2
 
+    - name: Install Python Dependencies
+      run: |
+        pip install -r requirements.txt
+
     - name: Install Parsec
       run: |
         choco install parsec -y --ignore-checksums
 
-    - name: Launch Parsec with Executable
+    - name: Launch Parsec and Login
       run: |
-        Start-Process -FilePath "C:\Program Files\Parsec\parsecd.exe" -ArgumentList "--email=${{ github.event.inputs.email }} --password=${{ github.event.inputs.password }}" -NoNewWindow -Wait
+        python scripts/parsec_automation.py --email "${{ github.event.inputs.email }}" --password "${{ github.event.inputs.password }}"
 
-    - name: Verify Login
+    - name: Keep Runner Active
       run: |
-        & "C:\Program Files\Parsec\parsecd.exe" --status
-
-    - name: Keep Session Alive
-      run: |
-        Start-Sleep -Seconds 3600
+        timeout /t 3600
         
