@@ -24,12 +24,13 @@ jobs:
 
     - name: Launch Parsec with Executable
       run: |
-        Start-Process -FilePath "C:\Program Files\Parsec\parsecd.exe" -ArgumentList "--email='${{ github.event.inputs.email }}' --password='${{ github.event.inputs.password }}'" -NoNewWindow -Wait
+        Start-Process -FilePath "C:\Program Files\Parsec\parsecd.exe" -ArgumentList "--email=${{ github.event.inputs.email }} --password=${{ github.event.inputs.password }}" -NoNewWindow -Wait
 
     - name: Verify Login
       run: |
-        "C:\Program Files\Parsec\parsecd.exe" --status
+        cmd /c "C:\Program Files\Parsec\parsecd.exe --status"
 
     - name: Keep Session Alive
       run: |
         Start-Sleep -Seconds 3600
+        
