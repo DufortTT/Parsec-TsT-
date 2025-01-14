@@ -1,3 +1,4 @@
+
 name: Auto-Login-Parsec
 
 on: 
@@ -36,11 +37,7 @@ jobs:
 
     - name: Verify Login with Executable
       run: |
-        "C:\Program Files\Parsec\Parsec.exe" --status
-
-    - name: Verify Login with Shortcut
-      run: |
-        Start-Process -FilePath "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Parsec\Parsec.lnk" -ArgumentList "--status" -Wait
+        Start-Process -FilePath "C:\Program Files\Parsec\Parsec.exe" -ArgumentList "--status" -NoNewWindow -Wait
 
     - name: Keep Session Alive
       run: scripts/timeout.ps1
