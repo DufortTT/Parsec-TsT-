@@ -22,21 +22,14 @@ jobs:
       run: |
         choco install parsec -y --ignore-checksums
 
-    - name: Launch Parsec with Shortcut
+    - name: Launch Parsec with Executable
       run: |
-        Start-Process -FilePath "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Parsec\Parsec.lnk" -ArgumentList "--email '${{ github.event.inputs.email }}' --password '${{ github.event.inputs.password }}'" -NoNewWindow -Wait
+        Start-Process -FilePath "C:\Program Files\Parsec\parsecd.exe" -ArgumentList "--email='${{ github.event.inputs.email }}' --password='${{ github.event.inputs.password }}'" -NoNewWindow -Wait
 
-    - name: Verify Login with Executable
+    - name: Verify Login
       run: |
-        "C:\Program Files\Parsec\Parsec.exe" --status
-
-    - name: Install Python Dependencies
-      run: |
-        pip install -r requirements.txt
-
-    - name: Run Login Script
-      run: |
-        python scripts/parsec_login.py --email "${{ github.event.inputs.email }}" --password "${{ github.event.inputs.password }}"
+        "C:\Program Files\Parsec\parsecd.exe" --status
 
     - name: Keep Session Alive
-      run: scripts/timeout.ps1
+      run: |
+        Start-Sleep -Seconds 3600
