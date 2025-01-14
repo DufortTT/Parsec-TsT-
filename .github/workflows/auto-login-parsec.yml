@@ -28,7 +28,7 @@ jobs:
 
     - name: Verify Login
       run: |
-        cmd /c "C:\Program Files\Parsec\parsecd.exe --status"
+        cmd /c ""C:\Program Files\Parsec\parsecd.exe" --status"
 
     - name: Keep Session Alive
       run: |
