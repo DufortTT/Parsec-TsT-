@@ -18,10 +18,6 @@ jobs:
     - name: Checkout Repository
       uses: actions/checkout@v2
 
-    - name: Clear Chocolatey Cache
-      run: |
-        choco clean
-
     - name: Install Parsec
       run: |
         choco install parsec -y --ignore-checksums
