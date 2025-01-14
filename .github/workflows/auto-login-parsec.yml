@@ -1,4 +1,3 @@
-
 name: Auto-Login-Parsec
 
 on: 
@@ -23,9 +22,9 @@ jobs:
       run: |
         choco install parsec -y --ignore-checksums
 
-    - name: Add Parsec to PATH
+    - name: Verify Login with Shortcut
       run: |
-        $env:Path += ";C:\Program Files\Parsec"
+        Start-Process -FilePath "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Parsec\Parsec.lnk" -ArgumentList "--status" -NoNewWindow -Wait
 
     - name: Install Python Dependencies
       run: |
@@ -35,10 +34,5 @@ jobs:
       run: |
         python scripts/parsec_login.py --email "${{ github.event.inputs.email }}" --password "${{ github.event.inputs.password }}"
 
-    - name: Verify Login with Executable
-      run: |
-        Start-Process -FilePath "C:\Program Files\Parsec\Parsec.exe" -ArgumentList "--status" -NoNewWindow -Wait
-
     - name: Keep Session Alive
       run: scripts/timeout.ps1
-      
