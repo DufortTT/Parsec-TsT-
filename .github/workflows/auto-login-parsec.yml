@@ -20,18 +20,24 @@ jobs:
 
     - name: Install Parsec
       run: |
-        choco install parsec -y  # Instala o cliente Parsec no ambiente
+        choco install parsec -y --ignore-checksums
+
+    - name: Add Parsec to PATH
+      run: |
+        $env:Path += ";C:\Program Files\Parsec"
+
+    - name: Install Python Dependencies
+      run: |
+        pip install -r requirements.txt
 
     - name: Run Login Script
       run: |
-        python parsec_login.py --email "${{ github.event.inputs.email }}" --password "${{ github.event.inputs.password }}"
-      env:
-        PARSEC_USER: ${{ github.event.inputs.email }}
-        PARSEC_PASS: ${{ github.event.inputs.password }}
+        python scripts/parsec_login.py --email "${{ github.event.inputs.email }}" --password "${{ github.event.inputs.password }}"
 
-    - name: Verify Login
+    - name: Verify Login with Executable
       run: |
-        parsec.exe --status  # Confirma se o login foi realizado com sucesso
+        Start-Process -FilePath "C:\Program Files\Parsec\Parsec.exe" -ArgumentList "--status" -NoNewWindow -Wait
 
     - name: Keep Session Alive
-      run: ./timeout.ps1
+      run: scripts/timeout.ps1
+      
