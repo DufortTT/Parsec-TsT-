@@ -12,7 +12,7 @@ on:
 
 jobs:
   connect-parsec:
-    runs-on: windows-latest  # Escolha Windows, pois o Parsec depende de GUI
+    runs-on: windows-latest  # Usamos Windows devido à interface gráfica necessária
 
     steps:
     - name: Checkout Repository
@@ -28,9 +28,10 @@ jobs:
 
     - name: Launch Parsec and Login
       run: |
-        python scripts/parsec_automation.py --email "${{ github.event.inputs.email }}" --password "${{ github.event.inputs.password }}"
+        python scripts/parsec_login.py --email "${{ github.event.inputs.email }}" --password "${{ github.event.inputs.password }}"
 
     - name: Keep Runner Active
       run: |
         timeout /t 3600
+        
         
